@@ -43,7 +43,7 @@ public class ChatClient {
 		readerThread.start();
 		
 		frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
-		frame.setSize(800, 800);
+		frame.setSize(800, 400);
 		frame.setVisible(true);
 		
 	}
@@ -68,7 +68,7 @@ public class ChatClient {
 		public void actionPerformed(ActionEvent ev) {
 			try {
 				
-				writer.println(username + outgoing.getText());
+				writer.println(username + " : " + outgoing.getText());
 				writer.flush();
 				
 			}catch(Exception ex) {
@@ -88,7 +88,7 @@ public class ChatClient {
 				
 				while((message = reader.readLine()) != null) {
 					System.out.println("read" + message);
-					incoming.append(username+ ":"+ message + "\n");
+					incoming.append( message + "\n");
 				}
 			}catch(Exception ex) {
 				ex.printStackTrace();
