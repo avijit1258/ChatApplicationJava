@@ -63,7 +63,7 @@ public class ChatClient {
 	private void setUpNetworking() {
 		
 		try {
-			sock = new Socket("127.0.0.1", 6666);
+			sock = new Socket("192.168.0.110", 44);
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
 			writer = new PrintWriter(sock.getOutputStream());

@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 public class ChatServer {
 
 	JTextArea clientsMessage;
+	JTextArea userList;
 	ArrayList clientOutputStreams;
 	JButton sendButton;
 	JTextField smsToAll;
@@ -89,15 +90,17 @@ public class ChatServer {
 	public void showingClients()
 	{
 		String st = "000..,";
-		
+		String t = "";
 		for(String s : uname)
 		{
 			st += s+",";
+			t += s+"\n";
 		}
 		
 		System.out.println(st);
 		
 		Iterator it = clientOutputStreams.iterator();
+		userList.setText(t);
 		while(it.hasNext()) {
 			try {
 				PrintWriter writer = (PrintWriter) it.next();
@@ -160,10 +163,20 @@ public class ChatServer {
 		      JScrollPane qScroller = new JScrollPane(clientsMessage);
 			  qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			  qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+			  
+			  userList = new JTextArea(15, 10);
+				userList.setLineWrap(true);
+				userList.setWrapStyleWord(true);
+				userList.setEditable(false);
+				JScrollPane uScroller = new JScrollPane(userList);
+				uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				
+			  
 			  smsToAll = new JTextField(20);
 			  sendButton = new JButton("Send To All");
 			  sendButton.addActionListener(new SendButtonListener());
 			  content.add(qScroller);
+			  content.add(uScroller);
 			  content.add(smsToAll);
 			  content.add(sendButton);
 			  window.getContentPane().add(BorderLayout.CENTER, content);
