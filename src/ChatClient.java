@@ -12,7 +12,7 @@ public class ChatClient {
 	BufferedReader reader;
 	PrintWriter writer;
 	Socket sock;
-	
+	String username;
 	
 	public static void main(String[] args) {
 		ChatClient client = new ChatClient();
@@ -37,12 +37,13 @@ public class ChatClient {
 		mainPanel.add(sendButton);
 		setUpNetworking();
 		
+		username = JOptionPane.showInputDialog("Welcome ! Kindly say who you are ?");
 		
 		Thread readerThread = new Thread(new IncomingReader());
 		readerThread.start();
 		
 		frame.getContentPane().add(BorderLayout.CENTER, mainPanel);
-		frame.setSize(480, 640);
+		frame.setSize(800, 800);
 		frame.setVisible(true);
 		
 	}
@@ -50,7 +51,7 @@ public class ChatClient {
 	private void setUpNetworking() {
 		
 		try {
-			sock = new Socket("127.0.0.1", 5000);
+			sock = new Socket("127.0.0.1", 6666);
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
 			writer = new PrintWriter(sock.getOutputStream());
@@ -67,7 +68,7 @@ public class ChatClient {
 		public void actionPerformed(ActionEvent ev) {
 			try {
 				
-				writer.println(outgoing.getText());
+				writer.println(username + outgoing.getText());
 				writer.flush();
 				
 			}catch(Exception ex) {
@@ -87,7 +88,7 @@ public class ChatClient {
 				
 				while((message = reader.readLine()) != null) {
 					System.out.println("read" + message);
-					incoming.append(message + "\n");
+					incoming.append(username+ ":"+ message + "\n");
 				}
 			}catch(Exception ex) {
 				ex.printStackTrace();
