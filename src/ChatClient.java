@@ -9,10 +9,12 @@ public class ChatClient {
 	
 	JTextArea incoming;
 	JTextField outgoing;
+	JTextArea userList;
 	BufferedReader reader;
 	PrintWriter writer;
 	Socket sock;
 	String username;
+	String[] ps;
 	
 	public static void main(String[] args) {
 		ChatClient client = new ChatClient();
@@ -20,8 +22,9 @@ public class ChatClient {
 	}
 	
 	public void go() {
-		JFrame frame = new JFrame("Avijits Chat");
+		JFrame frame = new JFrame("Client");
 		JPanel mainPanel = new JPanel();
+		
 		incoming = new JTextArea(15, 50);
 		incoming.setLineWrap(true);
 		incoming.setWrapStyleWord(true);
@@ -29,10 +32,19 @@ public class ChatClient {
 		JScrollPane qScroller = new JScrollPane(incoming);
 		qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		
+		userList = new JTextArea(15, 10);
+		userList.setLineWrap(true);
+		userList.setWrapStyleWord(true);
+		userList.setEditable(false);
+		JScrollPane uScroller = new JScrollPane(userList);
+		uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
 		outgoing = new JTextField(20);
 		JButton sendButton = new JButton("Send");
 		sendButton.addActionListener(new SendButtonListener());
 		mainPanel.add(qScroller);
+		mainPanel.add(uScroller);
 		mainPanel.add(outgoing);
 		mainPanel.add(sendButton);
 		setUpNetworking();
@@ -87,12 +99,37 @@ public class ChatClient {
 			try {
 				
 				while((message = reader.readLine()) != null) {
-					System.out.println("read" + message);
-					incoming.append( message + "\n");
+					if(!messageOrList(message)) {
+						System.out.println("read" + message);
+						incoming.append( message + "\n");
+					}else {
+						userList.setText("");
+						for(int i = 1; i < ps.length; i++)
+						{
+							System.out.println(ps[i]);
+							
+							userList.append(ps[i]+"\n");
+						}
+						
+					}
+					
 				}
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
+		}
+		public boolean messageOrList(String ms) {
+			ps = ms.split("\\,");
+			
+			if(ps[0].equals("000.."))
+			{
+				return true;
+			}else
+			{
+				return false;
+			}
+			
+			
 		}
 	}
 	

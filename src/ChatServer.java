@@ -88,20 +88,26 @@ public class ChatServer {
 	
 	public void showingClients()
 	{
-//		for(int i = 0; i < uname.size() ; i++) {
-//			System.out.println(uname.get(i));
-//			System.out.println(port.get(i)+ "\n");
-//			
-//		}
+		String st = "000..,";
 		
 		for(String s : uname)
 		{
-			System.out.println(s);
+			st += s+",";
 		}
-		for(Integer i: port)
-		{
-			System.out.println(i);
+		
+		System.out.println(st);
+		
+		Iterator it = clientOutputStreams.iterator();
+		while(it.hasNext()) {
+			try {
+				PrintWriter writer = (PrintWriter) it.next();
+				writer.println(st);
+				writer.flush();
+			}catch(Exception ex) {
+				ex.printStackTrace();
+			}
 		}
+		
 			
 	}
 	
