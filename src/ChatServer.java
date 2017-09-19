@@ -20,7 +20,7 @@ public class ChatServer {
 	JButton sendButton;
 	JTextField smsToAll;
 	ArrayList<String> uname = new ArrayList<String>();
-	ArrayList<Integer> port = new ArrayList<Integer>();
+	ArrayList<Socket> port = new ArrayList<Socket>();
 	
 	public class ClientHandler implements Runnable{
 		
@@ -44,6 +44,7 @@ public class ChatServer {
 		
 		public void run() {
 			String message;
+			String[] parts = null;
 			boolean once = false;
 			
 			
@@ -52,8 +53,8 @@ public class ChatServer {
 						if(!once)
 						{
 							System.out.println(sock.getPort());
-							port.add(sock.getPort());
-							String[] parts = message.split("\\:");
+							port.add(sock);
+							parts = message.split("\\:");
 							System.out.println(parts[0]);
 							uname.add(parts[0]);
 							once = true;
@@ -63,6 +64,11 @@ public class ChatServer {
 						tellEveryone(message);
 						showingClients();
 					}
+					uname.remove(parts[0]);
+					port.remove(sock);
+					showingClients();
+					tellEveryone(parts[0]+ "("+sock+")"+"has left the conversation\n");
+					clientsMessage.append(parts[0]+ "("+sock+")"+"has left the conversation\n");
 				}
 			catch(Exception ex) {
 				ex.printStackTrace();
@@ -129,7 +135,7 @@ public class ChatServer {
 					
 					Thread t = new Thread(new ClientHandler(clientSocket));
 					t.start();
-					System.out.println("got a connection");
+					System.out.println("got a connection from "+clientSocket);
 					//showingClients();
 				}
 			}catch(Exception ex) {
@@ -164,7 +170,7 @@ public class ChatServer {
 			  qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			  qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 			  
-			  userList = new JTextArea(15, 10);
+			    userList = new JTextArea(15, 10);
 				userList.setLineWrap(true);
 				userList.setWrapStyleWord(true);
 				userList.setEditable(false);
@@ -181,6 +187,7 @@ public class ChatServer {
 			  content.add(sendButton);
 			  window.getContentPane().add(BorderLayout.CENTER, content);
 			  window.setSize(800, 400);
+			  window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			  window.setVisible(true);
 			  clientsMessage.setText("");
 			  
