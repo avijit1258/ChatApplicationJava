@@ -67,8 +67,8 @@ public class ChatServer {
 					uname.remove(parts[0]);
 					port.remove(sock);
 					showingClients();
-					tellEveryone(parts[0]+ "("+sock+")"+"has left the conversation\n");
-					clientsMessage.append(parts[0]+ "("+sock+")"+"has left the conversation\n");
+					tellEveryone(parts[0].toUpperCase()+ "("+sock+")"+"has left the conversation\n");
+					clientsMessage.append(parts[0].toUpperCase()+ "("+sock+")"+"has left the conversation\n");
 				}
 			catch(Exception ex) {
 				ex.printStackTrace();
