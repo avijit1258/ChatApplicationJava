@@ -109,13 +109,13 @@ public class ChatClient {
 				
 				while((message = reader.readLine()) != null) {
 					if(!messageOrList(message)) {
-						System.out.println("read" + message);
+						//System.out.println("read" + message);
 						incoming.append( message + "\n");
 					}else {
 						userList.setText("");
 						for(int i = 1; i < ps.length; i++)
 						{
-							System.out.println(ps[i]);
+							//System.out.println(ps[i]);
 							
 							userList.append(ps[i]+"\n");
 						}

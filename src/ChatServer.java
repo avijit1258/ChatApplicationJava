@@ -52,14 +52,14 @@ public class ChatServer {
 					while((message = reader.readLine()) != null) {
 						if(!once)
 						{
-							System.out.println(sock.getPort());
+							//System.out.println(sock.getPort());
 							port.add(sock);
 							parts = message.split("\\:");
-							System.out.println(parts[0]);
+							//System.out.println(parts[0]);
 							uname.add(parts[0]);
 							once = true;
 						}
-						System.out.println("read" + message);
+						//System.out.println("read" + message);
 						clientsMessage.append(message+"\n");
 						tellEveryone(message);
 						showingClients();
