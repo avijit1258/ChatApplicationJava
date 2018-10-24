@@ -93,6 +93,7 @@ public class ChatServer
     public class SendButtonListener implements ActionListener
     {
 
+        // FUNCTION: actionPerformed
         @Override
         public void actionPerformed(ActionEvent arg0)
         {
@@ -101,7 +102,6 @@ public class ChatServer
 
             smsToAll.setText("");
             smsToAll.requestFocus();
-
         }
 
     }
