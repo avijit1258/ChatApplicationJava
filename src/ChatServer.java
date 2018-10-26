@@ -47,13 +47,17 @@ public class ChatServer {
 
 
         public void run() {
+
             String message;
             String[] parts = null;
             boolean once = false;
 
-            try {
-                while ((message = reader.readLine()) != null) {
-                    if (!once) {
+            try
+            {
+                while((message = reader.readLine()) != null)
+                {
+                    if(!once)
+                    {
                         //System.out.println(sock.getPort());
                         port.add(sock);
                         parts = message.split("\\:");
@@ -66,34 +70,37 @@ public class ChatServer {
                     tellEveryone(message);
                     showingClients();
                 }
+
                 uname.remove(parts[0]);
                 port.remove(sock);
                 showingClients();
-                tellEveryone(
-                    parts[0].toUpperCase() + "(" + sock + ")" + "has left the conversation\n");
-                clientsMessage.append(
-                    parts[0].toUpperCase() + "(" + sock + ")" + "has left the conversation\n");
-            } catch (IOException ex) {
+                tellEveryone(parts[0].toUpperCase() + "(" + sock + ")" + "has left the conversation\n");
+                clientsMessage.append(parts[0].toUpperCase() + "(" + sock + ")" + "has left the conversation\n");
+            }
+            catch(Exception ex)
+            {
                 ex.printStackTrace();
             }
 
         }
     }
 
-    public class SendButtonListener implements ActionListener {
+    // CLASS: SendButtonListener
+    public class SendButtonListener implements ActionListener
+    {
 
+        // FUNCTION: actionPerformed
         @Override
-        public void actionPerformed(ActionEvent arg0) {
+        public void actionPerformed(ActionEvent arg0)
+        {
             clientsMessage.append("SERVER : " + smsToAll.getText() + "\n");
             tellEveryone("SERVER : " + smsToAll.getText());
 
-            smsToAll.setText(Constants.EMPTY);
+            smsToAll.setText("");
             smsToAll.requestFocus();
-
         }
 
     }
-
 
     public void showingClients() {
         String st = Constants.SHOW_MSG_VAL_CON_VAL;
@@ -107,53 +114,86 @@ public class ChatServer {
 
         Iterator it = clientOutputStreams.iterator();
         userList.setText(t);
-        while (it.hasNext()) {
-            PrintWriter writer = (PrintWriter) it.next();
-            writer.println(st);
-            writer.flush();
+
+        while(it.hasNext())
+        {
+            try
+            {
+                PrintWriter writer = (PrintWriter) it.next();
+                writer.println(st);
+                writer.flush();
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
         }
-
-
     }
 
-    public void go() {
+
+    // FUNCTION: go
+    public void go()
+    {
         clientOutputStreams = new ArrayList();
 
-        try {
-            ServerSocket serverSock = new ServerSocket(Constants.PORT);
+        try
+        {
+            ServerSocket serverSock = new ServerSocket(6666);
 
-            while (true) {
+            while(true)
+            {
                 Socket clientSocket = serverSock.accept();
+                //System.out.println(clientSocket.getPort());
                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                 clientOutputStreams.add(writer);
 
                 Thread t = new Thread(new ClientHandler(clientSocket));
                 t.start();
                 System.out.println("got a connection from " + clientSocket);
+                //showingClients();
             }
-        } catch (Exception ex) {
+        }
+        catch(Exception ex)
+        {
+
             ex.printStackTrace();
         }
 
     }
 
 
-    public void tellEveryone(String message) {
+    // FUNCTION: tellEveryOne
+    public void tellEveryone(String message)
+    {
+
         Iterator it = clientOutputStreams.iterator();
-        while (it.hasNext()) {
-            PrintWriter writer = (PrintWriter) it.next();
-            writer.println(message);
-            writer.flush();
+
+        while(it.hasNext())
+        {
+            try
+            {
+                PrintWriter writer = (PrintWriter) it.next();
+                writer.println(message);
+                writer.flush();
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
         }
     }
 
-    public void addAction() {
+    // FUNCTION: addAction
+    public void addAction()
+    {
         JFrame window = new JFrame("SERVER");
         JPanel content = new JPanel();
+
         clientsMessage = new JTextArea(15, 50);
         clientsMessage.setLineWrap(true);
         clientsMessage.setWrapStyleWord(true);
         clientsMessage.setEditable(false);
+      
         JScrollPane qScroller = new JScrollPane(clientsMessage);
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -162,16 +202,20 @@ public class ChatServer {
         userList.setLineWrap(true);
         userList.setWrapStyleWord(true);
         userList.setEditable(false);
+
         JScrollPane uScroller = new JScrollPane(userList);
         uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         smsToAll = new JTextField(20);
+      
         sendButton = new JButton("Send To All");
         sendButton.addActionListener(new SendButtonListener());
+
         content.add(qScroller);
         content.add(uScroller);
         content.add(smsToAll);
         content.add(sendButton);
+
         window.getContentPane().add(BorderLayout.CENTER, content);
         window.setSize(800, 400);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -16,7 +16,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-public class ChatClient {
+
+// CLASS: ChatClient
+public class ChatClient
+{
 
     JTextArea incoming;
     JTextField outgoing;
@@ -27,21 +30,32 @@ public class ChatClient {
     String username;
     String[] ps;
 
-    public static void main(String[] args) {
+
+	// FUNCTION: main
+    public static void main(String[] args)
+    {
         ChatClient client = new ChatClient();
         client.go();
     }
 
-    public void go() {
 
-        JFrame frame = new JFrame(Constants.CLIENT);
+    // FUNCTION: go
+    public void go()
+    {
+
+        JFrame frame = new JFrame("Client");
         JPanel mainPanel = new JPanel();
+
         JLabel l1, l2;
+        l1 = new JLabel(Constants.MESSAGE_BOX);
+        l2 = new JLabel(Constants.USER_LIST);
+
+
         incoming = new JTextArea(15, 50);
         incoming.setLineWrap(true);
         incoming.setWrapStyleWord(true);
         incoming.setEditable(false);
-        l1 = new JLabel(Constants.MESSAGE_BOX);
+
         JScrollPane qScroller = new JScrollPane(incoming);
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -50,17 +64,20 @@ public class ChatClient {
         userList.setLineWrap(true);
         userList.setWrapStyleWord(true);
         userList.setEditable(false);
-        l2 = new JLabel(Constants.USER_LIST);
+      
         JScrollPane uScroller = new JScrollPane(userList);
         uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         outgoing = new JTextField(20);
+
         JButton sendButton = new JButton(Constants.SEND);
         sendButton.addActionListener(new SendButtonListener());
+
         mainPanel.add(qScroller);
         mainPanel.add(uScroller);
         mainPanel.add(outgoing);
         mainPanel.add(sendButton);
+
         setUpNetworking();
 
         username = JOptionPane.showInputDialog(Constants.WELCOME_MESSAGE);
@@ -77,28 +94,46 @@ public class ChatClient {
 
     }
 
-    private void setUpNetworking() {
 
-        try {
+    // FUNCTION: setUpNetworking
+    private void setUpNetworking()
+    {
+
+        try
+        {
             sock = new Socket(Constants.HOST, Constants.PORT);
+
             InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
+
             reader = new BufferedReader(streamReader);
             writer = new PrintWriter(sock.getOutputStream());
+
             System.out.println("Networking established");
 
-        } catch (IOException ex) {
+        }
+        catch(IOException ex)
+        {
             ex.printStackTrace();
         }
     }
 
-    public class SendButtonListener implements ActionListener {
+    // CLASS: SendButtonListener
+    public class SendButtonListener implements ActionListener
+    {
 
 
-        public void actionPerformed(ActionEvent ev) {
-
-            writer.println(username + " : " + outgoing.getText());
-            writer.flush();
-
+    	// FUNCTION: actionPerformed
+        public void actionPerformed(ActionEvent ev)
+        {
+            try
+            {
+                writer.println(username + " : " + outgoing.getText());
+                writer.flush();
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
             outgoing.setText("");
             outgoing.requestFocus();
         }
@@ -134,6 +169,7 @@ public class ChatClient {
             return Constants.SHOW_MSG_VAL_CON_VAL.equals(ps[0]);
         }
     }
+
 
 
 }
