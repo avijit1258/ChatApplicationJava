@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
+
 // CLASS: ChatClient
 public class ChatClient
 {
@@ -181,6 +182,5 @@ public class ChatClient
 
         }
     }
-
 
 }
