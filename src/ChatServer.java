@@ -1,17 +1,24 @@
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.List;
-
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
-// CLASS: ChatServer
-public class ChatServer
-{
+
+public class ChatServer {
 
     JTextArea clientsMessage;
     JTextArea userList;
@@ -21,35 +28,25 @@ public class ChatServer
     ArrayList<String> uname = new ArrayList<String>();
     ArrayList<Socket> port = new ArrayList<Socket>();
 
-
-    // CLASS: ClientHandler
-    public class ClientHandler implements Runnable
-    {
+    public class ClientHandler implements Runnable {
 
         BufferedReader reader;
         Socket sock;
-        //JTextArea clientsMessage; get nullPointerException for this line wasted one day
 
-        // FUNCTION: ClientHandler
-        public ClientHandler(Socket clientSocket)
-        {
+        public ClientHandler(Socket clientSocket) {
 
-            try
-            {
+            try {
                 sock = clientSocket;
-
                 InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
                 reader = new BufferedReader(isReader);
-            }
-            catch(Exception ex)
-            {
-                ex.printStackTrace();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
-        // FUNCTION: run
-        public void run()
-        {
+
+        public void run() {
 
             String message;
             String[] parts = null;
@@ -68,7 +65,6 @@ public class ChatServer
                         uname.add(parts[0]);
                         once = true;
                     }
-
                     //System.out.println("read" + message);
                     clientsMessage.append(message + "\n");
                     tellEveryone(message);
@@ -106,14 +102,10 @@ public class ChatServer
 
     }
 
-    // FUNCTION: showingClients
-    public void showingClients()
-    {
-        String st = "000..,";
-        String t = "";
-
-        for(String s : uname)
-        {
+    public void showingClients() {
+        String st = Constants.SHOW_MSG_VAL_CON_VAL;
+        String t = Constants.EMPTY;
+        for (String s : uname) {
             st += s + ",";
             t += s + "\n";
         }
@@ -163,6 +155,7 @@ public class ChatServer
         }
         catch(Exception ex)
         {
+
             ex.printStackTrace();
         }
 
@@ -200,7 +193,7 @@ public class ChatServer
         clientsMessage.setLineWrap(true);
         clientsMessage.setWrapStyleWord(true);
         clientsMessage.setEditable(false);
-
+      
         JScrollPane qScroller = new JScrollPane(clientsMessage);
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -214,7 +207,7 @@ public class ChatServer
         uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         smsToAll = new JTextField(20);
-
+      
         sendButton = new JButton("Send To All");
         sendButton.addActionListener(new SendButtonListener());
 
@@ -227,18 +220,15 @@ public class ChatServer
         window.setSize(800, 400);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
-
-        clientsMessage.setText("");
+        clientsMessage.setText(Constants.EMPTY);
 
     }
 
-    // FUNCTION: main
-    public static void main(String[] args)
-    {
-
+    public static void main(String[] args) {
         ChatServer cs = new ChatServer();
-        
         cs.addAction();
         cs.go();
     }
+
+
 }
