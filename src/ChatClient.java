@@ -151,7 +151,7 @@ public class ChatClient
                         incoming.append(message + "\n");
                     } else {
                         userList.setText("");
-                        for (int i = 1; i < ps.length; i++) {
+                        for (int i = 1; i < ps.length; ++i) {
 
                             userList.append(ps[i] + "\n");
                         }
