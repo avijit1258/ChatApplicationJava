@@ -16,12 +16,14 @@ public class ChatClient {
 	String username;
 	String[] ps;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		ChatClient client = new ChatClient();
 		client.go();
 	}
 	
-	public void go() {
+	public void go() 
+	{
 		
 		JFrame frame = new JFrame("Client");
 		JPanel mainPanel = new JPanel();
@@ -69,24 +71,28 @@ public class ChatClient {
 		
 	}
 	
-	private void setUpNetworking() {
+	private void setUpNetworking() 
+	{
 		
-		try {
+		try 
+		{
 			sock = new Socket("127.0.0.1", 6666);
 			InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
 			reader = new BufferedReader(streamReader);
 			writer = new PrintWriter(sock.getOutputStream());
 			System.out.println("Networking established");
 		
-		}catch(IOException ex) {
+		}catch(IOException ex) 
+		{
 			ex.printStackTrace();
 		}
 	}
 	
-	public class SendButtonListener implements ActionListener{
-		
-		
-		public void actionPerformed(ActionEvent ev) {
+	public class SendButtonListener implements ActionListener
+	{
+			
+		public void actionPerformed(ActionEvent ev) 
+		{
 			try {
 				
 				writer.println(username + " : " + outgoing.getText());
@@ -101,7 +107,8 @@ public class ChatClient {
 		}
 	}
 	
-	public class IncomingReader implements Runnable{
+	public class IncomingReader implements Runnable
+	{
 		public void run() {
 			String message;
 			
@@ -127,7 +134,8 @@ public class ChatClient {
 				ex.printStackTrace();
 			}
 		}
-		public boolean messageOrList(String ms) {
+		public boolean messageOrList(String ms) 
+		{
 			ps = ms.split("\\,");
 			
 			if(ps[0].equals("000.."))
@@ -141,6 +149,4 @@ public class ChatClient {
 			
 		}
 	}
-	
-
 }
