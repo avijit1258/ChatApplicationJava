@@ -1,4 +1,18 @@
+/**
+ * Class for constants.
+ * This class contains all the constants that are used
+ * in program
+ */
 public class Constants {
+    /**
+     * Constructs the object.
+     */
+    private Constants() {
+        /**
+         * unused Constructor
+         */
+    }
+
     public static final String CLIENT = "Client";
     public static final String SEND = "Send";
     public static final String MESSAGE_BOX = "Message Box";

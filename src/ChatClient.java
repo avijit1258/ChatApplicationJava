@@ -17,9 +17,10 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 
-// CLASS: ChatClient
-public class ChatClient
-{
+/**
+ * Class for chat client.
+ */
+public class ChatClient {
 
     JTextArea incoming;
     JTextField outgoing;
@@ -30,18 +31,21 @@ public class ChatClient
     String username;
     String[] ps;
 
-
-	// FUNCTION: main
-    public static void main(String[] args)
-    {
+    /**
+     * main Function.
+     *
+     * @param      args  The arguments
+     */
+    public static void main(String[] args) {
         ChatClient client = new ChatClient();
         client.go();
     }
 
 
-    // FUNCTION: go
-    public void go()
-    {
+    /**
+     * go function.
+     */
+    public void go() {
 
         JFrame frame = new JFrame("Client");
         JPanel mainPanel = new JPanel();
@@ -64,7 +68,7 @@ public class ChatClient
         userList.setLineWrap(true);
         userList.setWrapStyleWord(true);
         userList.setEditable(false);
-      
+
         JScrollPane uScroller = new JScrollPane(userList);
         uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -94,13 +98,12 @@ public class ChatClient
 
     }
 
+    /**
+     * function for setting up Networking.
+     */
+    private void setUpNetworking() {
 
-    // FUNCTION: setUpNetworking
-    private void setUpNetworking()
-    {
-
-        try
-        {
+        try {
             sock = new Socket(Constants.HOST, Constants.PORT);
 
             InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
@@ -110,37 +113,41 @@ public class ChatClient
 
             System.out.println("Networking established");
 
-        }
-        catch(IOException ex)
-        {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    // CLASS: SendButtonListener
-    public class SendButtonListener implements ActionListener
-    {
+    /**
+     * Class for send button listener.
+     * implementing the ActionListener
+     */
+    public class SendButtonListener implements ActionListener {
 
 
-    	// FUNCTION: actionPerformed
-        public void actionPerformed(ActionEvent ev)
-        {
-            try
-            {
+        /**
+         * function for actionPerformed.
+         *
+         * @param      ev    is an Object of type ActionEvent.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            try {
                 writer.println(username + " : " + outgoing.getText());
                 writer.flush();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
             outgoing.setText("");
             outgoing.requestFocus();
         }
     }
-
+    /**
+     * Class for incoming reader.
+     */
     public class IncomingReader implements Runnable {
-
+        /**
+         * function for run.
+         */
         public void run() {
             String message;
 
@@ -163,7 +170,13 @@ public class ChatClient
                 e.printStackTrace();
             }
         }
-
+        /**
+         * function for messageOrList
+         *
+         * @param      ms    of type ms
+         *
+         * @return     true or false.
+         */
         public boolean messageOrList(String ms) {
             ps = ms.split(Constants.REG_EX_ESC_PATTERN);
             return Constants.SHOW_MSG_VAL_CON_VAL.equals(ps[0]);
