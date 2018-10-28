@@ -17,7 +17,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-
+/**
+ * Class for chat server.
+ */
 public class ChatServer {
 
     JTextArea clientsMessage;
@@ -27,12 +29,18 @@ public class ChatServer {
     JTextField smsToAll;
     ArrayList<String> uname = new ArrayList<String>();
     ArrayList<Socket> port = new ArrayList<Socket>();
-
+    /**
+     * Class for client handler.
+     */
     public class ClientHandler implements Runnable {
 
         BufferedReader reader;
         Socket sock;
-
+        /**
+         * Constructs the object.
+         *
+         * @param      clientSocket  The client socket
+         */
         public ClientHandler(Socket clientSocket) {
 
             try {
@@ -45,7 +53,9 @@ public class ChatServer {
             }
         }
 
-
+        /**
+         * run function.
+         */
         public void run() {
 
             String message;
@@ -85,11 +95,17 @@ public class ChatServer {
         }
     }
 
-    // CLASS: SendButtonListener
+    /**
+     * Class for send button listener.
+     */
     public class SendButtonListener implements ActionListener
     {
 
-        // FUNCTION: actionPerformed
+        /**
+         * function for action Performed.
+         *
+         * @param      arg0  The argument 0
+         */
         @Override
         public void actionPerformed(ActionEvent arg0)
         {
@@ -101,7 +117,9 @@ public class ChatServer {
         }
 
     }
-
+    /**
+     * function for showing clients.
+     */
     public void showingClients() {
         String st = Constants.SHOW_MSG_VAL_CON_VAL;
         String t = Constants.EMPTY;
@@ -131,7 +149,9 @@ public class ChatServer {
     }
 
 
-    // FUNCTION: go
+    /**
+     * function for go.
+     */
     public void go()
     {
         clientOutputStreams = new ArrayList();
@@ -162,7 +182,11 @@ public class ChatServer {
     }
 
 
-    // FUNCTION: tellEveryOne
+    /**
+     * function to tell EveryOne.
+     *
+     * @param      message  The message
+     */
     public void tellEveryone(String message)
     {
 
@@ -183,7 +207,10 @@ public class ChatServer {
         }
     }
 
-    // FUNCTION: addAction
+    /**
+     * Adds an action.
+     */
+
     public void addAction()
     {
         JFrame window = new JFrame("SERVER");
@@ -223,7 +250,11 @@ public class ChatServer {
         clientsMessage.setText(Constants.EMPTY);
 
     }
-
+    /**
+     * function for main.
+     *
+     * @param      args  The arguments
+     */
     public static void main(String[] args) {
         ChatServer cs = new ChatServer();
         cs.addAction();
