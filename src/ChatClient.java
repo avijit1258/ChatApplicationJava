@@ -17,35 +17,32 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 
-// CLASS: ChatClient
 public class ChatClient
 {
 
-    JTextArea incoming;
-    JTextField outgoing;
-    JTextArea userList;
-    BufferedReader reader;
-    PrintWriter writer;
-    Socket sock;
-    String username;
-    String[] ps;
+    private JTextArea incoming;
+    private JTextField outgoing;
+    private JTextArea userList;
+    private BufferedReader reader;
+    private PrintWriter writer;
+    private String username;
+    //Is this a password or something else? should probably be renamed
+    private String[] ps;
 
 
-	// FUNCTION: main
     public static void main(String[] args)
     {
         ChatClient client = new ChatClient();
         client.go();
     }
 
-
-    // FUNCTION: go
-    public void go()
+    private void go()
     {
 
         JFrame frame = new JFrame("Client");
         JPanel mainPanel = new JPanel();
 
+        //TODO use this labels
         JLabel l1, l2;
         l1 = new JLabel(Constants.MESSAGE_BOX);
         l2 = new JLabel(Constants.USER_LIST);
@@ -94,20 +91,16 @@ public class ChatClient
 
     }
 
-
-    // FUNCTION: setUpNetworking
     private void setUpNetworking()
     {
 
         try
         {
-            sock = new Socket(Constants.HOST, Constants.PORT);
-
-            InputStreamReader streamReader = new InputStreamReader(sock.getInputStream());
-
+            Socket socket = new Socket(Constants.HOST, Constants.PORT);
+            InputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
             reader = new BufferedReader(streamReader);
-            writer = new PrintWriter(sock.getOutputStream());
-
+            writer = new PrintWriter(socket.getOutputStream());
+            //Todo implement a logger e.g slf4j
             System.out.println("Networking established");
 
         }
@@ -117,12 +110,9 @@ public class ChatClient
         }
     }
 
-    // CLASS: SendButtonListener
     public class SendButtonListener implements ActionListener
     {
 
-
-    	// FUNCTION: actionPerformed
         public void actionPerformed(ActionEvent ev)
         {
             try
@@ -164,7 +154,7 @@ public class ChatClient
             }
         }
 
-        public boolean messageOrList(String ms) {
+        boolean messageOrList(String ms) {
             ps = ms.split(Constants.REG_EX_ESC_PATTERN);
             return Constants.SHOW_MSG_VAL_CON_VAL.equals(ps[0]);
         }
