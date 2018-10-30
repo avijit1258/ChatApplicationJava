@@ -138,7 +138,7 @@ public class ChatClient
             outgoing.requestFocus();
         }
     }
-
+		//IncomingReader
     public class IncomingReader implements Runnable {
 
         public void run() {
