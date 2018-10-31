@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,24 +21,24 @@ import javax.swing.ScrollPaneConstants;
 
 public class ChatServer {
 
-    JTextArea clientsMessage;
-    JTextArea userList;
-    ArrayList clientOutputStreams;
-    JButton sendButton;
-    JTextField smsToAll;
-    ArrayList<String> uname = new ArrayList<String>();
-    ArrayList<Socket> port = new ArrayList<Socket>();
+    private JTextArea clientsMessage;
+    private JTextArea userList;
+    private ArrayList<PrintWriter> clientOutputStreams;
+    private JButton sendButton;
+    private JTextField smsToAll;
+    private List<String> userName = new ArrayList<>();
+    private List<Socket> port = new ArrayList<>();
 
     public class ClientHandler implements Runnable {
 
         BufferedReader reader;
-        Socket sock;
+        Socket socket;
 
         public ClientHandler(Socket clientSocket) {
 
             try {
-                sock = clientSocket;
-                InputStreamReader isReader = new InputStreamReader(sock.getInputStream());
+                socket = clientSocket;
+                InputStreamReader isReader = new InputStreamReader(socket.getInputStream());
                 reader = new BufferedReader(isReader);
 
             } catch (IOException e) {
@@ -58,11 +59,12 @@ public class ChatServer {
                 {
                     if(!once)
                     {
-                        //System.out.println(sock.getPort());
-                        port.add(sock);
-                        parts = message.split("\\:");
+                        //Remove commented out code if not used.
+                        //System.out.println(socket.getPort());
+                        port.add(socket);
+                        parts = message.split(":");
                         //System.out.println(parts[0]);
-                        uname.add(parts[0]);
+                        userName.add(parts[0]);
                         once = true;
                     }
                     //System.out.println("read" + message);
@@ -71,11 +73,12 @@ public class ChatServer {
                     showingClients();
                 }
 
-                uname.remove(parts[0]);
-                port.remove(sock);
+                assert parts != null;
+                userName.remove(parts[0]);
+                port.remove(socket);
                 showingClients();
-                tellEveryone(parts[0].toUpperCase() + "(" + sock + ")" + "has left the conversation\n");
-                clientsMessage.append(parts[0].toUpperCase() + "(" + sock + ")" + "has left the conversation\n");
+                tellEveryone(parts[0].toUpperCase() + "(" + socket + ")" + "has left the conversation\n");
+                clientsMessage.append(parts[0].toUpperCase() + "(" + socket + ")" + "has left the conversation\n");
             }
             catch(Exception ex)
             {
@@ -85,11 +88,9 @@ public class ChatServer {
         }
     }
 
-    // CLASS: SendButtonListener
     public class SendButtonListener implements ActionListener
     {
 
-        // FUNCTION: actionPerformed
         @Override
         public void actionPerformed(ActionEvent arg0)
         {
@@ -103,23 +104,25 @@ public class ChatServer {
     }
 
     public void showingClients() {
-        String st = Constants.SHOW_MSG_VAL_CON_VAL;
-        String t = Constants.EMPTY;
-        for (String s : uname) {
-            st += s + ",";
-            t += s + "\n";
+        StringBuilder st = new StringBuilder(Constants.SHOW_MSG_VAL_CON_VAL);
+        StringBuilder t = new StringBuilder(Constants.EMPTY);
+        for (String s : userName) {
+            st.append(s).append(",");
+            t.append(s).append("\n");
         }
 
         System.out.println(st);
 
-        Iterator it = clientOutputStreams.iterator();
-        userList.setText(t);
+        Iterator<PrintWriter> it = clientOutputStreams.iterator();
+        userList.setText(t.toString());
 
+
+        //TODO extract duplicated code to a function.
         while(it.hasNext())
         {
             try
             {
-                PrintWriter writer = (PrintWriter) it.next();
+                PrintWriter writer = it.next();
                 writer.println(st);
                 writer.flush();
             }
@@ -131,15 +134,15 @@ public class ChatServer {
     }
 
 
-    // FUNCTION: go
-    public void go()
+    private void go()
     {
-        clientOutputStreams = new ArrayList();
+        clientOutputStreams = new ArrayList<>();
 
         try
         {
             ServerSocket serverSock = new ServerSocket(6666);
 
+            //Infinite loop????
             while(true)
             {
                 Socket clientSocket = serverSock.accept();
@@ -155,24 +158,24 @@ public class ChatServer {
         }
         catch(Exception ex)
         {
-
             ex.printStackTrace();
         }
 
     }
 
 
-    // FUNCTION: tellEveryOne
-    public void tellEveryone(String message)
+
+    private void tellEveryone(String message)
     {
 
-        Iterator it = clientOutputStreams.iterator();
+        Iterator<PrintWriter> it = clientOutputStreams.iterator();
 
+        //Duplicated code
         while(it.hasNext())
         {
             try
             {
-                PrintWriter writer = (PrintWriter) it.next();
+                PrintWriter writer = it.next();
                 writer.println(message);
                 writer.flush();
             }
@@ -183,8 +186,7 @@ public class ChatServer {
         }
     }
 
-    // FUNCTION: addAction
-    public void addAction()
+    private void addAction()
     {
         JFrame window = new JFrame("SERVER");
         JPanel content = new JPanel();
