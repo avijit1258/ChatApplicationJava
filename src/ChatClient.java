@@ -57,7 +57,7 @@ public class ChatClient
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        userList = new JTextArea(15, 10);
+       JTextArea userList = new JTextArea(15, 10);
         userList.setLineWrap(true);
         userList.setWrapStyleWord(true);
         userList.setEditable(false);
@@ -65,7 +65,7 @@ public class ChatClient
         JScrollPane uScroller = new JScrollPane(userList);
         uScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        outgoing = new JTextField(20);
+       JTextField outgoing = new JTextField(20);
 
         JButton sendButton = new JButton(Constants.SEND);
         sendButton.addActionListener(new SendButtonListener());
@@ -77,7 +77,7 @@ public class ChatClient
 
         setUpNetworking();
 
-        username = JOptionPane.showInputDialog(Constants.WELCOME_MESSAGE);
+       JOptionPane username = JOptionPane.showInputDialog(Constants.WELCOME_MESSAGE);
 
         frame.setTitle(username.toUpperCase());
 
