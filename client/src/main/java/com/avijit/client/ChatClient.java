@@ -1,3 +1,6 @@
+package com.avijit.client;
+
+import com.avijit.commons.Constants;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,7 +80,7 @@ public class ChatClient
 
         setUpNetworking();
 
-       JOptionPane username = JOptionPane.showInputDialog(Constants.WELCOME_MESSAGE);
+        String username = JOptionPane.showInputDialog(Constants.WELCOME_MESSAGE);
 
         frame.setTitle(username.toUpperCase());
 

@@ -1,3 +1,5 @@
+package com.avijit.commons;
+
 public class Constants {
     public static final String CLIENT = "Client";
     public static final String SEND = "Send";
