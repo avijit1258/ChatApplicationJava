@@ -29,3 +29,11 @@ hs_err_pid*
 /bin/
 /.classpath
 /.project
+
+client/client.iml
+client/target
+commons/commons.iml
+commons/target
+server/server.iml
+server/target
+chat-app.iml

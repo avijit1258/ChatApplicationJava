@@ -8,18 +8,20 @@ In order to run locally first clone this repository by
 
 git clone https://github.com/avijit1258/ChatApplicationJava/
 
+//Chat client can be in the same pc or one which is connect over same local area network like wifi or same ISP
 Next go to the src folder inside ChatApplicationJava and open terminal to run
 
-//for running ChatServer
-javac ChatServer.java
+run 
+```
+mvn clean install
+```
 
-java ChatServer
+and execute the client and server. Client and and Server should be executed in separate terminal
 
-//Chat client can be in the same pc or one which is connect over same local area network like wifi or same ISP
-javac ChatClient.java
-
-java ChatClient
-
+```$xslt
+java -jar server/target/server-1.0-SNAPSHOT.jar
+java -jar client/target/client-1.0-SNAPSHOT.jar
+```
 
 ### Prerequisites
 

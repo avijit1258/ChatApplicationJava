@@ -1,3 +1,5 @@
+package com.avijit;
+
 import java.math.BigInteger;
 import java.util.Scanner;
 
