@@ -1,4 +1,5 @@
 # ChatApplicationJava
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Favijit1258%2FChatApplicationJava&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=PAGE+VIEWS&edge_flat=false)](https://hits.seeyoufarm.com)
 
 This project was a requirement for my undergraduate Computer Networking sessional. The main purpose of this project is to get an idea of java socket programming and who applications of different pc can communicate over same local area network. Now our target is to build a good documented and well organized chat app in java so that beginners can get started easily. Kindly come forward to make this project flourish.
 
